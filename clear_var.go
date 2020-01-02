@@ -1,6 +1,9 @@
 package toolbox
 
-import "math/big"
+import (
+	"math/big"
+	"runtime"
+)
 
 // ClearBig clear a big.Int from memory
 func ClearBig(b *big.Int) {
@@ -9,22 +12,16 @@ func ClearBig(b *big.Int) {
 }
 
 func clearBigWords(w []big.Word) {
-	if len(w) == 0 {
-		return
+	for i := range w {
+		w[i] = 0
 	}
-	w[0] = 0
-	for wp := 1; wp < len(w); wp *= 2 {
-		copy(w[wp:], w[:wp])
-	}
+	runtime.KeepAlive(w)
 }
 
 // ClearBytes clear a byte slice from memory
 func ClearBytes(b []byte) {
-	if len(b) == 0 {
-		return
+	for i := range b {
+		b[i] = 0
 	}
-	b[0] = 0
-	for bp := 1; bp < len(b); bp *= 2 {
-		copy(b[bp:], b[:bp])
-	}
+	runtime.KeepAlive(b)
 }
