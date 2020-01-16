@@ -18,3 +18,24 @@ func BigToSlice(in *big.Int, slice []byte) {
 		}
 	}
 }
+
+// FromBig converts a *big.Int into a []uint64 in little endian
+func FromBig(out []uint64, big *big.Int) { //little endian
+	for i := range out {
+		out[i] = 0
+	}
+
+	if bits.UintSize == 32 {
+		for i, v := range big.Bits() {
+			if i&0x01 == 0x00 {
+				out[i/2] |= uint64(v)
+			} else {
+				out[i/2] |= (uint64(v) << 32)
+			}
+		}
+	} else { // bits.UintSize == 64
+		for i, v := range big.Bits() {
+			out[i] = uint64(v)
+		}
+	}
+}
