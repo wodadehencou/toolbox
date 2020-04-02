@@ -7,6 +7,9 @@ import (
 
 // ClearBig clear a big.Int from memory
 func ClearBig(b *big.Int) {
+	if b == nil {
+		return
+	}
 	words := b.Bits()
 	clearBigWords(words)
 }
